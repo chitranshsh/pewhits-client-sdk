@@ -1,11 +1,16 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.4
 Name: pewhits-client-sdk
-Version: 0.4.0
+Version: 0.9.0
 Summary: A Python client SDK for the PewHits radio server
 Author-email: Chitransh Shrivastava <chitransh819@gmail.com>
 License: MIT
 Requires-Python: >=3.11
 Description-Content-Type: text/markdown
+Requires-Dist: typing_extensions>=4.12.2
+Requires-Dist: cattrs>=22.2.0
+Requires-Dist: quattro>=22.2.0
+Requires-Dist: attrs>=24.2.0
+Requires-Dist: aiohttp>=3.10.5
 
 # PewHits Radio SDK
 
@@ -18,7 +23,7 @@ A lightweight, async Python client SDK for interacting with PewHits Radio's WebS
 Install directly from PyPI:
 
 ```bash
-pip install pewhits-client-sdk==0.4
+pip install pewhits-client-sdk==0.9
 ```
 
 ---
@@ -104,7 +109,7 @@ Feel free to open issues or submit a PR!
 
 ## 📄 License
 
-MIT License © 2025 Chitransh Shrivastava
+License © 2025 Chitransh Shrivastava
 
 ---
 
