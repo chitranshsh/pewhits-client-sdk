@@ -11,7 +11,7 @@ from cattrs.preconf.json import make_converter
 from cattrs import structure
 
 
-WS_URL = "ws://ro-premium.pylex.xyz:9626/ws"  # Change this to your actual host & port
+WS_URL = "ws://eu-ro-01.wisp.uno:9364/ws"
 KEEPALIVE_RATE: Final = 15
 READ_TIMEOUT: Final = 20
 
@@ -31,10 +31,13 @@ async def client_runner(client: PewHits, api_key: str) -> None:
     async with TaskGroup() as tg:
         while True:
             try:
-                await client.before_start(tg)
+                await client.before_start(client, tg)
                 async with ClientSession() as session:
                     async with session.ws_connect(WS_URL) as ws:
-                        pewhitsclient = PewHitsClient(ws)
+                        chat = PewHitsClient()
+                        chat.ws = ws
+                        chat.tg = tg
+                        client.pewhits = chat
 
                         # Send API key
                         await ws.send_json({"api_key": api_key})
@@ -56,8 +59,8 @@ async def client_runner(client: PewHits, api_key: str) -> None:
                                         data = msg.json()
                                         rid = data.get("rid")
 
-                                        if rid and rid in pewhitsclient._req_id_registry:
-                                            await pewhitsclient._req_id_registry[rid].put(data)
+                                        if rid and rid in chat._req_id_registry:
+                                            await chat._req_id_registry[rid].put(data)
                                         else:
                                             # This is likely a notification/broadcast message
                                             action = data.get("action")
@@ -75,7 +78,7 @@ async def client_runner(client: PewHits, api_key: str) -> None:
                                                     brd_now_playing = structure(payload, NowPlayingSong)
                                                     await client.broadcast_now_playing(client, brd_now_playing)
                                                 elif action == "KeepAliveResponse":
-                                                    print(data.get("status"))
+                                                    pass
                                             else:
                                                 print("🔔 Untracked/broadcast message:", data)
 

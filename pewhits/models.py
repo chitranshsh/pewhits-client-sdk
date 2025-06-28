@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional, ClassVar, Union, List
+from typing import Optional, ClassVar, Union, List, Any
 
 @dataclass
 class Error:
@@ -7,9 +7,14 @@ class Error:
     The client request or parameter was invalid.
     """
     
+    action: str
+    type: str
+    rid: str
+    code: int
     message: str
-    do_not_reconnect: bool = False
-    rid: str | None = None
+    error: str
+    data: Optional[Any] = None
+    retry_after: Optional[int] = None
 
 @dataclass
 class SessionMetadata:
@@ -135,6 +140,41 @@ class QueueSong:
     external_url: str
     
 @dataclass
+class PlaySongData:
+    """
+    Represents a song requested.
+
+    - id: Unique ID for the song requested.
+    - title: Title of the song.
+    - artist: Name of the artist.
+    - album: Name of the album the song is part of.
+    - played: The time the song was or will be played.
+    - duration: Duration of the song in milliseconds.
+    - albumart: URL for the album art image.
+    - YEAR: The year of the album release.
+    - spotifyID: Unique Spotify ID for the song.
+    - requester: The ID of the user who requested the song.
+    - apprequest: Optional field for application request data (if any).
+    - radioname: The name of the radio playing the song.
+    - radionameshort: A short name for the radio.
+    - external_url: External URL to the song (e.g., on Spotify).
+    """
+    title: str
+    artist: str
+    album: str
+    played: str
+    duration: int
+    albumart: str
+    YEAR: str
+    spotifyID: str
+    requester: str
+    apprequest: Optional[str]
+    radioname: str
+    radionameshort: str
+    external_url: str
+    id: int
+    
+@dataclass
 class BlockedSongs:
     """
     Represents a blocked song.
@@ -230,7 +270,7 @@ class BlocklistRequest:
         rid: str
         code: int
         message: str
-        data: Union[List[BlockedSongs], str]
+        data: List[BlockedSongs]
         
     Response: ClassVar = BlocklistResponse
 
@@ -369,7 +409,7 @@ class PlaySongRequest:
         action: str
         type: str
         rid: str
-        data: str
+        data: PlaySongData
         code: int
         message: str
         
