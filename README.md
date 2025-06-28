@@ -9,7 +9,7 @@ A lightweight, async Python client SDK for interacting with PewHits Radio's WebS
 Install directly from PyPI:
 
 ```bash
-pip install pewhits-client-sdk==0.4
+pip install pewhits-client-sdk==0.9
 ```
 
 ---
@@ -95,7 +95,7 @@ Feel free to open issues or submit a PR!
 
 ## 📄 License
 
-MIT License © 2025 Chitransh Shrivastava
+License © 2025 Chitransh Shrivastava
 
 ---
 
